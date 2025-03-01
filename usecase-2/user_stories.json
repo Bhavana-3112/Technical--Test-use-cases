@@ -1,0 +1,153 @@
+// user_stories.json
+[
+    {
+        "id": "US001",
+        "title": "User Login",
+        "description": "As a user, I want to log in to the system",
+        "acceptance_criteria": [
+            "Given the user is on the login page",
+            "When the user enters valid credentials",
+            "Then the user should be redirected to the dashboard"
+        ]
+    },
+    {
+        "id": "US002",
+        "title": "Password Reset",
+        "description": "As a user, I want to reset my password",
+        "acceptance_criteria": [
+            "Given the user is on the login page",
+            "When the user clicks on 'Forgot Password'",
+            "And the user enters their email",
+            "Then a reset link should be sent to their email"
+        ]
+    }
+]
+
+
+
+
+
+
+
+
+
+
+import json
+import os
+from typing import Dict, List, Any
+
+class TestGenerator:
+    """Simple test case generator and automation tool"""
+    
+    def __init__(self, user_stories_path: str = 'user_stories.json'):
+        """
+        Initialize the TestGenerator with user stories from a JSON file.
+        
+        :param user_stories_path: Path to the JSON file containing user stories.
+        """
+        try:
+            with open(user_stories_path) as f:
+                self.sample_stories = json.load(f)
+        except FileNotFoundError:
+            print(f"Error: File '{user_stories_path}' not found.")
+            self.sample_stories = []
+    
+    def get_user_stories(self) -> List[Dict[str, Any]]:
+        """Get sample user stories"""
+        return self.sample_stories
+    
+    def generate_bdd_test(self, user_story: Dict[str, Any]) -> str:
+        """Generate BDD-style test case from user story"""
+        output = f"Feature: {user_story['title']}\n\n"
+        output += f"  Scenario: {user_story['title']} Successfully\n"
+        
+        for criteria in user_story["acceptance_criteria"]:
+            output += f"    {criteria}\n"
+            
+        return output
+    
+    def generate_playwright_test(self, bdd_test: str, user_story: Dict[str, Any]) -> str:
+        """Generate Playwright test script from BDD test case"""
+        lines = bdd_test.strip().split('\n')
+        scenario = next((line.replace("Scenario:", "").strip() 
+                         for line in lines if line.strip().startswith("Scenario:")), 
+                        user_story['title'])
+        
+        test_code = "import { test, expect } from '@playwright/test';\n\n"
+        # Fix: Use double curly braces to escape them in f-strings
+        test_code += f"test('{scenario}', async ({{ page }}) => {{\n"
+        
+        # Basic implementation based on common patterns
+        if "login" in user_story['title'].lower():
+            test_code += "  // Navigate to login page\n"
+            test_code += "  await page.goto('https://example.com/login');\n\n"
+            test_code += "  // Enter credentials\n"
+            test_code += "  await page.fill('#username', 'testuser');\n"
+            test_code += "  await page.fill('#password', 'password123');\n"
+            test_code += "  await page.click('#loginButton');\n\n"
+            test_code += "  // Verify redirect\n"
+            test_code += "  await expect(page).toHaveURL('https://example.com/dashboard');\n"
+        elif "password reset" in user_story['title'].lower():
+            test_code += "  // Navigate to login page\n"
+            test_code += "  await page.goto('https://example.com/login');\n\n"
+            test_code += "  // Click forgot password\n"
+            test_code += "  await page.click('text=Forgot Password');\n\n"
+            test_code += "  // Enter email\n"
+            test_code += "  await page.fill('#email', 'user@example.com');\n"
+            test_code += "  await page.click('#resetButton');\n\n"
+            test_code += "  // Verify confirmation\n"
+            test_code += "  await expect(page.locator('text=Reset link sent')).toBeVisible();\n"
+        else:
+            # Generic template for other scenarios
+            test_code += "  // TODO: Implement test steps for this scenario\n"
+            test_code += "  await page.goto('https://example.com');\n"
+            
+        test_code += "});\n"
+        return test_code
+    
+    def run(self):
+        """Run the test generation pipeline"""
+        print("Starting simple test generator...")
+        
+        # Create output directories
+        try:
+            os.makedirs("output/bdd_tests", exist_ok=True)
+            os.makedirs("output/playwright_tests", exist_ok=True)
+        except OSError as e:
+            print(f"Error creating directories: {e}")
+            return
+        
+        # Process each user story
+        for story in self.get_user_stories():
+            print(f"Processing '{story['title']}'...")
+            
+            # Generate BDD test
+            bdd_test = self.generate_bdd_test(story)
+            bdd_path = f"output/bdd_tests/{story['id']}_{story['title'].replace(' ', '_')}.feature"
+            try:
+                with open(bdd_path, "w") as f:
+                    f.write(bdd_test)
+            except Exception as e:
+                print(f"Error writing BDD test to file: {e}")
+                continue
+            
+            # Generate Playwright test
+            playwright_test = self.generate_playwright_test(bdd_test, story)
+            playwright_path = f"output/playwright_tests/{story['id']}_{story['title'].replace(' ', '_')}.spec.js"
+            try:
+                with open(playwright_path, "w") as f:
+                    f.write(playwright_test)
+            except Exception as e:
+                print(f"Error writing Playwright test to file: {e}")
+                continue
+            
+            print(f"Generated tests for '{story['title']}'")
+            
+        print("\nTest generation complete!")
+        print(f"- BDD tests saved to: output/bdd_tests")
+        print(f"- Playwright tests saved to: output/playwright_tests")
+
+# Run the generator
+if __name__ == "__main__":
+    generator = TestGenerator()
+    generator.run()

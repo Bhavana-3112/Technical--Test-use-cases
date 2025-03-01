@@ -1,0 +1,11 @@
+id,projectName,authors,storyTests,regressionTestsAutomated,regressionTestsManual,totalTestsByApplication,storyPassed,storyFailed,storyUnexecuted,storyBlocked,storySkipped,storyCritical,,storyUnused,storyBugs,arPassed,arFailed,arUnexecuted,arBlocked,arCritical,arNew,arUnused,arBugs,mrPassed,mrFailed,,mrBlocked,mrSkipped,mrCritical,mrNew,mrUnused,mrBugs,createdAt,arSkipped
+1,ProjectA,Alice,100,50,30,180,80,5,5,2,0,10,15,3,2,40,3,2,1,0,5,8,1,1,25,1,1,0,0,3,5,0,0,2024-01-01,0
+2,ProjectA,Bob,105,52,32,189,83,6,4,1,1,11,16,2,1,42,2,1,0,1,6,9,0,0,27,0,0,0,0,4,6,0,0,2024-01-08,1
+3,ProjectA,Charlie,110,55,35,200,88,7,3,0,2,12,17,1,0,45,1,0,0,2,7,10,0,0,30,0,0,0,0,5,7,0,0,2024-01-15,2
+4,ProjectA,David,115,58,38,211,93,8,2,0,3,13,18,0,0,48,0,0,0,3,8,11,0,0,33,0,0,0,0,6,8,0,0,2024-01-22,3
+5,ProjectA,Eve,120,60,40,220,96,9,1,0,4,14,19,0,0,50,0,0,0,4,9,12,0,0,35,0,0,0,0,7,9,0,0,2024-01-29,4
+6,ProjectA,Frank,125,62,42,229,99,10,0,0,5,15,20,0,0,52,0,0,0,5,10,13,0,0,37,0,0,0,0,8,10,0,0,2024-02-05,5
+7,ProjectA,Grace,130,64,44,238,102,11,0,0,6,16,21,0,0,54,0,0,0,6,11,14,0,0,39,0,0,0,0,9,11,0,0,2024-02-12,6
+8,ProjectA,Henry,135,66,46,247,105,12,0,0,7,17,22,0,0,56,0,0,0,7,12,15,0,0,41,0,0,0,0,10,12,0,0,2024-02-19,7
+9,ProjectA,Ivy,140,68,48,256,108,13,0,0,8,18,23,0,0,58,0,0,0,8,13,16,0,0,43,0,0,0,0,11,13,0,0,2024-02-26,8
+10,ProjectA,Jack,145,70,50,265,111,14,0,0,9,19,24,0,0,60,0,0,0,9,14,17,0,0,45,0,0,0,0,12,14,0,0,2024-03-04,9
