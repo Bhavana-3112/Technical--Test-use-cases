@@ -33,7 +33,7 @@ Make sure you have Python installed, then install the necessary libraries using 
 
   **Create a virtual environment (recommended):**
 
-    ```bash
+    ```
     python3 -m venv venv
     source venv/bin/activate  # On Linux/macOS
     venv\Scripts\activate  # On Windows
